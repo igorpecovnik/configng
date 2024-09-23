@@ -48,7 +48,6 @@ jobs:
           dockerimages=("debian:bookworm" "debian:trixie" "ubuntu:jammy" "ubuntu:noble")
 
           # read tests cases and loop them
-
           if [[ -n "${{ steps.changed-files.outputs.all_changed_files }}" ]]; then
               tests=($(echo ${{ steps.changed-files.outputs.all_changed_files }} | tr " " "\n" | cut -d"." -f1 | cut -d"/" -f2))
               else
