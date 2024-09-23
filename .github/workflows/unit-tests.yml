@@ -39,7 +39,6 @@ jobs:
           files: |
               tests/*.conf
 
-
       - name: "Make JSON ${{ steps.changed-files.outputs.all_changed_files }}"
         id: json
         run: |
@@ -49,9 +48,10 @@ jobs:
           dockerimages=("debian:bookworm" "debian:trixie" "ubuntu:jammy" "ubuntu:noble")
 
           # read tests cases and loop them
-          tests=($(grep -rw config/tests/*.conf -e "ENABLED=true" | cut -d"/" -f3 | cut -d"." -f1))
           if [[ -n "${{ steps.changed-files.outputs.all_changed_files }}" ]]; then
-              tests=$(echo ${{ steps.changed-files.outputs.all_changed_files }}  | tr " " "\n" | cut -d"." -f1 | cut -d"/" -f2)
+              tests=($(echo ${{ steps.changed-files.outputs.all_changed_files }} | tr " " "\n" | cut -d"." -f1 | cut -d"/" -f2))
+              else
+              tests=($(grep -rw config/tests/*.conf -e "ENABLED=true" | cut -d"/" -f3 | cut -d"." -f1))
           fi
 
           for i in "${tests[@]}"; do
