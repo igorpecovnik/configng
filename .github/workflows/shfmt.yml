@@ -1,0 +1,12 @@
+name: ReviewDog
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize, review_requested]
+jobs:
+  shfmt:
+    name: runner / shfmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: reviewdog/action-shfmt@v1
+      - uses: reviewdog/action-typos@v1
