@@ -23,7 +23,7 @@ jobs:
          shell: bash {0}
          run: |
 
-           for file in $(find . -type f -executable ! -path '*/.git*/*' -exec grep -Iq . {} \; -print); do
+           for file in $(find . -name "*.sh" ! -path '*/.git*/*' -exec grep -Iq . {} \; -print); do
                if grep -qE "^#\!/.*bash" $file; then
                    shellcheck --severity=error $file || ret=$?
                fi
