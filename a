@@ -1,0 +1,6 @@
+           for file in $(find . -name "*.sh" ! -path '*/.git*/*' -exec grep -Iq . {} \; -print); do
+               if grep -qE "^#\!/.*bash" $file; then
+echo $file
+                   shellcheck --severity=warning $file || ret=$?
+               fi
+           done
