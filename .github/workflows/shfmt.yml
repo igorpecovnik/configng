@@ -9,4 +9,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: reviewdog/action-shfmt@v1
-      - uses: reviewdog/action-typos@v1
+        with:
+          filter_mode: "diff_context"
