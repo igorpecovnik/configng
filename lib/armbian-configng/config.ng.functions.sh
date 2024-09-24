@@ -92,7 +92,7 @@ module_options+=(
 #
 # check dpkg status of $1 -- currently only 'not installed at all' case caught
 #
-function check_if_installed (){
+function check_if_installed() {
 
 	local DPKG_Status="$(dpkg -s "$1" 2>/dev/null | awk -F": " '/^Status/ {print $2}')"
 	if [[ "X${DPKG_Status}" = "X" || "${DPKG_Status}" = *deinstall* ]]; then
