@@ -1,0 +1,50 @@
+name: "Regenerate docs and JSON"
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+
+  Build:
+    name: "Make docs and main JSON file"
+    runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'armbian' }}
+    steps:
+
+      - name: Checkout build repo
+        uses: actions/checkout@v4
+
+      - name: Assemble module and jobs for production
+        run: |
+          tools/config-assemble.sh -p
+        
+      - name: Make docs
+        run: |
+          bin/armbian-config --doc
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: '`Automatic` documentation update'
+          signoff: false
+          branch: update-docs
+          delete-branch: true
+          title: '`Automatic` documentation update and JSON join'
+          body: |
+
+            Generate:
+
+            - [DOCUMENTATION.md](${{ github.event.repository.html_url }}/blob/main/DOCUMENTATION.md)
+            - Join [JSON parts](${{ github.event.repository.html_url }}/tree/main/tools/json/) to [common runtime JSON file](${{ github.event.repository.html_url }}/blob/main/lib/armbian-config/config.jobs.json)
+
+          labels: |
+            Needs review
+          #assignees: igorpecovnik
+          #reviewers: Must be org collaborator
+          draft: false
+
